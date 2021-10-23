@@ -6,7 +6,7 @@
 	void yyerror (char *msg);
 %}
 
-%token or and not
+%token or and not true false boolean
 
 %%
 
@@ -24,11 +24,19 @@ bterm  : bterm and bfactor { $$ = $1 && $3}
 
 bfactor : not bfactor      {$$ = !$2}
        | '(' bexpr ')' 	{$$ = $2}
+	   | true			{$$=$1}
+	   | false			{$$=$1};
 
 
 %%
 
 #include "lex.yy.c";
+
+void yyerror(char *msg)
+{
+	printf("Syntax error");
+	exit(0);
+}
 
 main()
 {
